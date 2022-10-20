@@ -5,13 +5,20 @@ import Layout from '../components/Layout.jsx';
 import RequiredAuth from './RequiredAuth.jsx';
 import Login from '../home/Login.jsx';
 import {aboutRoutes} from '../about/routes/index.jsx';
+import NotFound from "../components/NotFound.jsx";
+import LoaderRoute from "../components/LoaderRoute.jsx";
 
 const LazyAbout = React.lazy(() => import('../about/AboutUs.jsx'))
+
 
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <RequiredAuth />,
+    element: (
+      <LoaderRoute>
+        <RequiredAuth />
+      </LoaderRoute>
+    ),
     errorElement: <div>Error page</div>,
     children: [
       {
@@ -28,7 +35,15 @@ const router = createBrowserRouter([
   },
   {
     path: '/login',
-    element: <Login />
+    element: (
+      <LoaderRoute>
+        <Login />
+      </LoaderRoute>
+    )
+  },
+  {
+    path: '*',
+    element: <NotFound />
   }
 ]);
 
