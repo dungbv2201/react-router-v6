@@ -1,17 +1,29 @@
-import React, {useEffect} from 'react';
-import {useLocation} from "react-router-dom";
+import React, {useEffect, useState} from 'react';
+import {useLocation, Outlet} from "react-router-dom";
 import NProgress from "nprogress";
 import 'nprogress/nprogress.css'
+import {useUserStore} from '../stores/users.js';
 
-function LoaderRoute({children}) {
+function LoaderRoute() {
   const location = useLocation();
-
+  const state = useUserStore();
+  const [isLoading, setIsLoading] = useState(true);
+  
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if(token && !state.isAuthenticated){
+      state.setIsAuthenticated(true)
+    }
+    setIsLoading(false)
+  }, []);
+  
   useEffect(() => {
     NProgress.start();
     NProgress.done();
   }, [location.pathname]);
-
-  return children;
+  
+  if(isLoading) return null;
+  return  <Outlet />;
 }
 
 export default LoaderRoute;

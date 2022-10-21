@@ -4,12 +4,15 @@ import Header from './Header.jsx';
 import NProgress from "nprogress";
 
 
-function Layout(props) {
-
+function Layout({ children }) {
+	useEffect(() => {
+		console.log('layout')
+	}, []);
+	
 	return (
 		<div>
 			<Header />
-			<Outlet />
+			{children}
 		</div>
 	);
 }
